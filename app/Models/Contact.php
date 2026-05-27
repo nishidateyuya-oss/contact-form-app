@@ -12,7 +12,6 @@ class Contact extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id',
         'category_id',
         'first_name',
         'last_name',
@@ -24,16 +23,10 @@ class Contact extends Model
         'detail',
     ];
 
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class);
-    }
-
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
     }
-
 
     public function tags()
     {
