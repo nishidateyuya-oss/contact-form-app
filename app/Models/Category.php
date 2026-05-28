@@ -14,7 +14,7 @@ class Category extends Model
         'content',
     ];
 
-    public function tasks(): HasMany
+    public function contacts(): HasMany
     {
         return $this->hasMany(Contact::class);
     }
