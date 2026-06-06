@@ -2,17 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Http\Requests\IndexContactRequest;
-use App\Services\ContactSearchService;
-use App\Models\Contact;
 use App\Models\Category;
+use App\Models\Contact;
 use App\Models\Tag;
+use App\Services\ContactSearchService;
 
 class AdminController extends Controller
 {
-
-    public function index(IndexContactRequest $request, ContactSearchService $searchService) 
+    public function index(IndexContactRequest $request, ContactSearchService $searchService)
     {
         $query = $searchService->handle($request);
 
@@ -23,7 +21,7 @@ class AdminController extends Controller
         return view('admin.index', compact('contacts', 'categories', 'tags'));
     }
 
-    public function show(Contact $contact) 
+    public function show(Contact $contact)
     {
         return view('admin.show', compact('contact'));
     }
@@ -34,5 +32,4 @@ class AdminController extends Controller
 
         return redirect('/admin');
     }
-
 }

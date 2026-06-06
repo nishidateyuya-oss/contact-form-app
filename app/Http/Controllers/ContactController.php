@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ExportContactRequest;
 use App\Http\Requests\StoreContactRequest;
 use App\Models\Category;
-use App\Models\Tag;
 use App\Models\Contact;
-use App\Http\Requests\ExportContactRequest;
+use App\Models\Tag;
 use App\Services\ContactSearchService;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
@@ -20,7 +20,7 @@ class ContactController extends Controller
         return view('contact.index', compact('categories', 'tags'));
     }
 
-    public function confirm(StoreContactRequest $request) 
+    public function confirm(StoreContactRequest $request)
     {
         $validated = $request->validated();
 
@@ -32,17 +32,17 @@ class ContactController extends Controller
         return view('contact.confirm', compact('validated', 'category', 'tags'));
     }
 
-    public function store(StoreContactRequest $request) 
+    public function store(StoreContactRequest $request)
     {
         $contact = Contact::create($request->validated());
-        if($request->has('tag_ids')) {
+        if ($request->has('tag_ids')) {
             $contact->tags()->sync($request->tag_ids);
         }
 
         return redirect('/thanks');
     }
 
-    public function thanks() 
+    public function thanks()
     {
         return view('contact.thanks');
     }
@@ -57,10 +57,10 @@ class ContactController extends Controller
         $contacts = $query->latest()->get();
 
         // レンスポンスヘッダーの設定
-        $filename = 'contacts_export_' . now()->format('YmdHis') . '.csv';
+        $filename = 'contacts_export_'.now()->format('YmdHis').'.csv';
         $headers = [
-            'Content-Type'        => 'text/csv',
-            'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="'.$filename.'"',
         ];
 
         // ストリームレスポンスを返す
@@ -72,8 +72,8 @@ class ContactController extends Controller
 
             // 【条件3】 1行目にヘッダーを出力（指定の列順）
             fputcsv($stream, [
-                'ID', '氏名', '性別', 'メール', '電話', 
-                '住所', '建物', 'カテゴリ', '内容', '作成日時'
+                'ID', '氏名', '性別', 'メール', '電話',
+                '住所', '建物', 'カテゴリ', '内容', '作成日時',
             ]);
 
             // 性別の数値 $\rightarrow$ 文字列マッピング
@@ -84,7 +84,7 @@ class ContactController extends Controller
                 // 【条件3】 指定された列順でデータを配列にする
                 fputcsv($stream, [
                     $contact->id,
-                    $contact->last_name . ' ' . $contact->first_name,       // 氏名（結合）
+                    $contact->last_name.' '.$contact->first_name,       // 氏名（結合）
                     $genderMap[$contact->gender] ?? '不明',                 // 性別（文字列に変換）
                     $contact->email,
                     $contact->tel,

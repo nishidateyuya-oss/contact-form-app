@@ -15,9 +15,9 @@ class ContactSearchService
         $query->when($request->filled('keyword'), function ($q) use ($request) {
             $keyword = $request->input('keyword');
             $q->where(function ($subQuery) use ($keyword) {
-                $subQuery->where('last_name', 'like', '%' . $keyword . '%')
-                         ->orWhere('first_name', 'like', '%' . $keyword . '%')
-                         ->orWhere('email', 'like', '%' . $keyword . '%');
+                $subQuery->where('last_name', 'like', '%'.$keyword.'%')
+                    ->orWhere('first_name', 'like', '%'.$keyword.'%')
+                    ->orWhere('email', 'like', '%'.$keyword.'%');
             });
         });
 

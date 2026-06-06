@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -25,6 +26,19 @@ class Handler extends ExceptionHandler
     {
         $this->reportable(function (Throwable $e) {
             //
+        });
+
+        // SymfonyのNotFoundHttpExceptionをキャッチする形にします
+        $this->renderable(function (NotFoundHttpException $e, $request) {
+
+            // 先ほどのエラーメッセージ「No query results for model [App\Models\Contact]」が含まれているかチェック
+            if (str_contains($e->getMessage(), 'App\\Models\\Contact')) {
+                return response()->json([
+                    'error' => 'お問い合わせが見つかりませんでした',
+                ], 404);
+            }
+
+            // それ以外の普通の404（存在しないURLが叩かれた等）はLaravelの標準処理に任せる
         });
     }
 }
