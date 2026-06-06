@@ -15,7 +15,7 @@ class TagController extends Controller
         return redirect('/admin');
     }
 
-    public function show(Tag $tag) 
+    public function show(Tag $tag)
     {
         return view('admin.tags.edit', compact('tag'));
     }

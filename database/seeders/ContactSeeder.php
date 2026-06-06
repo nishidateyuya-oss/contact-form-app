@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
-use App\Models\Contact;
 use App\Models\Category;
+use App\Models\Contact;
 use App\Models\Tag;
+use Illuminate\Database\Seeder;
 
 class ContactSeeder extends Seeder
 {
@@ -17,6 +17,7 @@ class ContactSeeder extends Seeder
         // 既存データの存在チェック
         if (Category::count() === 0) {
             $this->command->error('先にCategoriesテーブルにデータを投入してください。');
+
             return;
         }
 
