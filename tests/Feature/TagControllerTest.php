@@ -15,7 +15,7 @@ class TagControllerTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $response =$this->actingAs($user)->post('/admin/tags', ['name' => '新しいタグ']);
+        $response = $this->actingAs($user)->post('/admin/tags', ['name' => '新しいタグ']);
 
         $response->assertRedirect('/admin');
     }
@@ -106,5 +106,27 @@ class TagControllerTest extends TestCase
         $response = $this->post('/admin/tags', ['name' => '新しいタグ']);
 
         $response->assertRedirect('/login');
+    }
+
+    public function test_未認証ユーザーのタグ更新拒否(): void
+    {
+        $tag = Tag::factory()->create(['name' => '変更前タグ']);
+
+        $response = $this->put("/admin/tags/{$tag->id}", ['name' => '変更後タグ']);
+
+        $response->assertRedirect('/login');
+    }
+
+    public function test_未認証ユーザーのタグ削除拒否(): void
+    {
+        $tag = Tag::factory()->create(['name' => '新しいタグ']);
+
+        $response = $this->delete("/admin/tags/{$tag->id}");
+
+        $response->assertRedirect('/login');
+        $this->assertDatabaseHas('tags', [
+            'id' => $tag->id,
+            'name' => $tag->name,
+        ]);
     }
 }

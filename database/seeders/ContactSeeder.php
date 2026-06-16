@@ -9,9 +9,7 @@ use Illuminate\Database\Seeder;
 
 class ContactSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
+    
     public function run(): void
     {
         // 既存データの存在チェック
